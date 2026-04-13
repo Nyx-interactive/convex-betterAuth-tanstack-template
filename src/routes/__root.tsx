@@ -9,7 +9,6 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { BottomNav } from "../components/BottomNav";
 import { createServerFn } from "@tanstack/react-start";
 import { QueryClient } from "@tanstack/react-query";
 import { ConvexQueryClient } from "@convex-dev/react-query";
@@ -22,6 +21,7 @@ import {
 } from "@convex-dev/better-auth/react-start";
 import { authClient } from "@/lib/auth-client";
 import appCss from "../styles.css?url";
+import { PwaRegistrar } from "@/components/pwa-registrar";
 
 // Get auth information for SSR using available cookies
 const fetchAuth = createServerFn({ method: "GET" }).handler(async () => {
@@ -49,10 +49,21 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
+      {
+        name: "theme-color",
+        content: "#09090b",
+      },
+      {
+        name: "description",
+        content:
+          "Collectr saves tweet links from paste or the share sheet and organizes them into folders.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/logo192.png" },
     ],
   }),
   beforeLoad: async (ctx) => {
@@ -93,7 +104,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="h-lvh flex flex-col overflow-x-clip w-full">
         <div className="flex-1 flex flex-col">{children}</div>
-        <BottomNav />
+        <PwaRegistrar />
         <TanStackDevtools
           config={{
             position: "bottom-right",

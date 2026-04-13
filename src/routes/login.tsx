@@ -1,7 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { authClient } from "@/lib/auth-client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { LoginForm } from "@/components/login-form";
 
 export const Route = createFileRoute("/login")({
@@ -9,16 +6,11 @@ export const Route = createFileRoute("/login")({
 });
 
 function RouteComponent() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await authClient.signIn.email({ email, password });
-  };
   return (
-    <div className="flex flex-col items-center px-4 justify-center h-screen">
-      <LoginForm />
-    </div>
+    <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+        <LoginForm />
+      </div>
+    </main>
   );
 }

@@ -1,6 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/User-button";
@@ -53,27 +51,72 @@ function HomePage() {
   const errorMessage = error?.message;
 
   return (
-    <div className="bg-black px-4 py-6 min-h-screen text-white">
-      <motion.div
-        layout
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className={cn("flex flex-col gap-4")}
-      >
-        <div className="flex justify-between items-center">
+    <main className="min-h-screen bg-black px-4 py-8 text-white">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dummy App</h1>
-            <p className="mt-1 text-sm text-zinc-400">
-              Minimal template wired up with Better Auth + Convex.
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-zinc-500">
+              Scaffold Ready
+            </p>
+            <h1 className="mt-2 text-4xl font-semibold tracking-tight">
+              Collectr
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-zinc-400 sm:text-base">
+              TanStack Start + Convex + Better Auth starter for a tweet
+              collection app with installed-PWA share target support.
             </p>
           </div>
           <UserButton />
         </div>
 
-        <motion.section
-          layout
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="rounded-xl border border-white/10 bg-white/5 p-5 shadow-lg backdrop-blur"
-        >
+        <section className="grid gap-4 md:grid-cols-[1.5fr_1fr]">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur">
+            <h2 className="text-lg font-semibold">What&apos;s scaffolded</h2>
+            <ul className="mt-4 grid gap-3 text-sm text-zinc-300">
+              <li>Better Auth wired to Convex for email/password auth</li>
+              <li>TanStack Start routing with authenticated SSR token hydration</li>
+              <li>PWA manifest + service worker registration foundation</li>
+              <li>
+                Web Share Target route at <code>/share-target</code> for installed
+                PWA handoff
+              </li>
+            </ul>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              {!session ? (
+                <Button asChild>
+                  <Link to="/login">Sign in</Link>
+                </Button>
+              ) : (
+                <Button onClick={() => authClient.signOut()}>Sign out</Button>
+              )}
+              <Button asChild variant="outline">
+                <Link
+                  to="/share-target"
+                  search={{
+                    url: "https://x.com/jack/status/20",
+                    text: "Saved from scaffold preview",
+                  }}
+                >
+                  Preview share target
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur">
+            <h2 className="text-lg font-semibold">Next implementation</h2>
+            <p className="mt-3 text-sm text-zinc-300">
+              The detailed build plan lives in <code>docs/implementation-plan.md</code>.
+            </p>
+            <p className="mt-3 text-sm text-zinc-400">
+              Next pass is folders, nested folders, tweet storage, official tweet
+              embeds, and save-from-share flow.
+            </p>
+          </div>
+        </section>
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white">
@@ -165,19 +208,8 @@ function HomePage() {
               </p>
             ) : null}
           </div>
-        </motion.section>
-        {!session && (
-          <Link
-            to="/login"
-            className="text-sm font-medium text-sky-400 transition hover:text-sky-300"
-          >
-            Go to login
-          </Link>
-        )}
-        {session && (
-          <Button onClick={() => authClient.signOut()}>Sign out</Button>
-        )}
-      </motion.div>
-    </div>
+        </section>
+      </div>
+    </main>
   );
 }
